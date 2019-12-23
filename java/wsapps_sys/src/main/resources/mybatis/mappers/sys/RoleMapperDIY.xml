@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.wsapps.sys.mapper.RoleMapper">
+
+	<resultMap id="detailResultMap" type="cc.wsapps.sys.entity.Role">
+		<id column="ID" jdbcType="BIGINT" property="id" />
+		<result column="CODE" jdbcType="VARCHAR" property="code" />
+		<result column="NAME" jdbcType="VARCHAR" property="name" />
+		<result column="STATUS" jdbcType="INTEGER" property="status" />
+		<result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+		<result column="CREATER" jdbcType="INTEGER" property="creater" />
+		<result column="CREATED_DATE" jdbcType="TIMESTAMP" property="createdDate" />
+		<result column="UPDATER" jdbcType="INTEGER" property="updater" />
+		<result column="UPDATED_DATE" jdbcType="TIMESTAMP" property="updatedDate" />
+		<result column="IS_DEL" jdbcType="INTEGER" property="isDel" />
+		<collection property="resources" column="bID" ofType="cc.wsapps.sys.entity.Resource">
+			<id column="bID" jdbcType="BIGINT" property="id" />
+			<result column="bCODE" jdbcType="VARCHAR" property="code" />
+			<result column="bNAME" jdbcType="VARCHAR" property="name" />
+			<result column="TYPE" jdbcType="INTEGER" property="type" />
+			<result column="MODULE_CODE" jdbcType="VARCHAR" property="moduleCode" />
+			<result column="VALUE" jdbcType="VARCHAR" property="value" />
+			<result column="bDESCRIPTION" jdbcType="VARCHAR" property="description" />
+			<result column="bCREATER" jdbcType="INTEGER" property="creater" />
+			<result column="bCREATED_DATE" jdbcType="TIMESTAMP" property="createdDate" />
+			<result column="bUPDATER" jdbcType="INTEGER" property="updater" />
+			<result column="bUPDATED_DATE" jdbcType="TIMESTAMP" property="updatedDate" />
+			<result column="bIS_DEL" jdbcType="INTEGER" property="isDel" />
+		</collection>
+		
+	</resultMap>
+  
+    <select id="selectDetailByCode" resultMap="detailResultMap" parameterType="java.lang.String">
+    	SELECT
+			a.ID,a.`CODE`,a.`NAME`,a.`STATUS`,a.DESCRIPTION,a.CREATER,a.CREATED_DATE,a.UPDATER,a.UPDATED_DATE,a.IS_DEL,
+			b.ID bID,b.`CODE` bCODE,b.`NAME` bNAME,b.TYPE,b.MODULE_CODE,b.`VALUE`,b.DESCRIPTION bDESCRIPTION,b.CREATER bCREATER,b.CREATED_DATE bCREATED_DATE,b.UPDATER bUPDATER,b.UPDATED_DATE bUPDATED_DATE,b.IS_DEL bIS_DEL
+		FROM
+			T_SYS_ROLE a
+			LEFT JOIN T_SYS_ROLE_RESOURCE_REF c ON a.`CODE` = c.ROLE_CODE
+			LEFT JOIN T_SYS_RESOURCE b ON b.`CODE` = c.RESOURCE_CODE 
+		WHERE
+			a.`CODE` = #{code,jdbcType=VARCHAR}
+			AND a.`STATUS` = 1 
+			AND a.IS_DEL = 0 
+			AND b.IS_DEL = 0 
+			AND c.IS_DEL =0
+    </select>
+</mapper>

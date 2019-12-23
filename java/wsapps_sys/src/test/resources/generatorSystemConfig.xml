@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+	<!-- 替换为本地数据库驱动jar -->
+	<classPathEntry location="C:/ewangshi/work/maven_repo/mysql/mysql-connector-java/8.0.17/mysql-connector-java-8.0.17.jar" />
+	<context id="context1" targetRuntime="MyBatis3">
+		<plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin>
+		<!-- <plugin type="org.mybatis.generator.plugins.SerializableExamplePlugin"></plugin> -->
+		<!-- <plugin type="org.mybatis.generator.plugins.BaseEntityExPlugin"></plugin> -->
+		<plugin type="org.mybatis.generator.plugins.PaginationPlugin"></plugin>
+		<plugin type="org.mybatis.generator.plugins.PaginationPluginEx"></plugin>
+		<plugin type="org.mybatis.generator.plugins.ToStringPlugin"></plugin>
+
+		<commentGenerator>
+			<property name="suppressAllComments" value="true" />
+			<property name="suppressDate" value="true" />
+			<property name="paginatorClass" value="cc.wsapps.framework.dao.Paginator" />
+			<property name="mapperClass" value="cc.wsapps.framework.dao.BaseMapper" />
+			<!-- <property name="baseEntityClass" value="cc.wsapps.framework.entity.BaseEntity" /> -->
+			<property name="baseTargetProject" value="C:/ewangshi/work/dr/demo/springboot_vue/java/wsapps_sys" />
+		</commentGenerator>
+		<!-- 替换数据库驱动、jdbc、用户名、密码 -->
+		<jdbcConnection driverClass="com.mysql.cj.jdbc.Driver" connectionURL="jdbc:mysql://47.74.150.33:9000/wsapps?useUnicode=true&amp;characterEncoding=utf-8&amp;serverTimezone=Asia/Shanghai&amp;useSSL=false" userId="root" password="Abc1234%" >
+			<property name="nullCatalogMeansCurrent" value="true" />
+		</jdbcConnection>
+
+		<javaTypeResolver>
+			<property name="forceBigDecimals" value="true" />
+		</javaTypeResolver>
+
+		<!-- 修改targetProject，targetProject是被生成实体的工程，注意将demo替换为对应的模块名 -->
+		<javaModelGenerator targetPackage="cc.wsapps.sys.entity" targetProject="/src/main/java">
+			<property name="trimStrings" value="true" />
+			<property name="examplePackage" value="cc.wsapps.sys.example"/>
+		</javaModelGenerator>
+		<sqlMapGenerator targetPackage="mybatis.mappers.sys" targetProject="/src/main/resources" />
+
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="cc.wsapps.sys.mapper" targetProject="/src/main/java"
+			implementationPackage="cc.wsapps.sys.mapper.impl">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+		
+		<!-- tableName是替换为需要生成实体对应的表，domainObjectName：自定义实体名 -->
+		<table tableName="T_SYS_USER" domainObjectName="User" >
+			<!-- generatedKey主键 -->
+			<generatedKey column="ID" sqlStatement="SELECT LAST_INSERT_ID()" identity="true"  />
+			<!-- text、longtext等数据库字段类型转string -->
+			<!--<columnOverride column="LONG_VARCHAR_FIELD" javaType="java.lang.String" jdbcType="VARCHAR" />-->
+			<columnOverride column="ID" javaType="java.lang.Long" jdbcType="BIGINT" />
+		</table>
+	</context>
+</generatorConfiguration>
